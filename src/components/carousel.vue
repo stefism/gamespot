@@ -30,11 +30,10 @@ import "vue3-carousel/dist/carousel.css";
 import { Carousel, Slide, Pagination } from "vue3-carousel";
 
 export default {
+  props: ["slides"],
   components: { Carousel, Slide, Pagination },
   data() {
-    return {
-      slides: [{ id: 1 }, { id: 2 }, { id: 3 }],
-    };
+    return {};
   },
 };
 </script>
