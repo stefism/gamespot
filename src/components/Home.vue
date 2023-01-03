@@ -1,8 +1,16 @@
 <!-- eslint-disable vue/multi-word-component-names -->
-<template>Home</template>
+<template>
+  <div class="container">
+    <Carousel />
+  </div>
+</template>
 
 <script>
-export default {};
+import Carousel from "@/components/carousel.vue";
+
+export default {
+  components: { Carousel },
+};
 </script>
 
 <style></style>
