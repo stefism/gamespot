@@ -5,9 +5,9 @@ import NotificationsModule from "./notifications";
 
 const store = createStore({
   modules: {
-    AuthenticationModule,
-    ArticlesModule,
-    NotificationsModule,
+    auth: AuthenticationModule,
+    articles: ArticlesModule,
+    notify: NotificationsModule,
   },
 });
 

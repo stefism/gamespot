@@ -5,6 +5,7 @@ import Routes from "./routes";
 import Store from "./store";
 import Toaster from "@meforma/vue-toaster";
 import "ant-design-vue/dist/antd.css";
+import "./firebase";
 
 const app = createApp(App);
 app.use(Antd);

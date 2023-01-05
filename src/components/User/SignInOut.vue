@@ -4,7 +4,11 @@
       <h1 v-text="loginFormType ? 'Login' : 'Register'"></h1>
 
       <div class="form-group">
-        <Field name="email" v-slot="{ field, errors, errorMessage }">
+        <Field
+          name="email"
+          value="test@test.com"
+          v-slot="{ field, errors, errorMessage }"
+        >
           <input
             type="text"
             id="email"
@@ -18,7 +22,11 @@
           </div>
         </Field>
 
-        <Field name="password" v-slot="{ field, errors, errorMessage }">
+        <Field
+          name="password"
+          value="test123"
+          v-slot="{ field, errors, errorMessage }"
+        >
           <input
             type="password"
             id="password"
@@ -68,10 +76,10 @@ export default {
     onSubmit(values, { resetForm }) {
       if (this.loginFormType == false) {
         // register
-        console.log(values, "register");
+        this.$store.dispatch("auth/register", values); // Чрез dispatch се викат екшъните, които сме написали в глобалния стейт. Екшъните обикновено правят заявка до базата и са най-често асинхронни операции. Ползваме три различни именувани модула на глобалния стейт и затова трябва да укажем първо името на модула  / и после името на екшъна
       } else {
         // login
-        console.log(values, "login");
+        this.$store.dispatch("auth/login", values);
       }
       resetForm();
     },
