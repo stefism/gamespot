@@ -107,6 +107,15 @@ const authenticationModule = {
         commit("notify/setLoading", false, { root: true });
       }
     },
+    async autosign({ commit, dispatch }, payload) {
+      try {
+        const userData = await dispatch("getUserInformation", payload.uid);
+        commit("setUser", userData);
+        return true;
+      } catch (error) {
+        errorMessage(commit, `Autosign failed , ${error}`);
+      }
+    },
   },
 };
 
