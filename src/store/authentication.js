@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { errorMessage, successMessage } from "@/Tools/vuex";
 import { db, auth } from "@/firebase";
 import {
@@ -7,6 +6,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import router from "@/routes";
+import errorMessages from "@/Tools/errorMessages";
 
 const DEFAULT_USER = {
   uid: null,
@@ -34,6 +34,7 @@ const authenticationModule = {
     },
   },
   actions: {
+    // eslint-disable-next-line no-unused-vars
     async getUserInformation({ commit }, payload) {
       try {
         const userInfo = await getDoc(doc(db, "users", payload));
@@ -49,6 +50,7 @@ const authenticationModule = {
     },
     async login({ commit, dispatch }, payload) {
       try {
+        commit("notify/setLoading", true, { root: true });
         const userCredential = await signInWithEmailAndPassword(
           auth,
           payload.email,
@@ -61,13 +63,17 @@ const authenticationModule = {
         );
         commit("setUser", userData);
 
+        successMessage(commit, `Welcome ${userCredential.user.email}`);
         router.push("/user/dashboard");
       } catch (error) {
-        console.log(error);
+        errorMessage(commit, errorMessages(error.code));
+      } finally {
+        commit("notify/setLoading", false, { root: true });
       }
     },
     async register({ commit }, payload) {
       try {
+        commit("notify/setLoading", true, { root: true }); //Когато използваме мутация от различен модул, винаги { root: true }. Иначе няма да работи.
         const userCredential = await createUserWithEmailAndPassword(
           auth,
           payload.email,
@@ -92,11 +98,13 @@ const authenticationModule = {
         //   { root: true }
         // ); - за да избегнем писането на този код навсякъде, ползваме функците successMessage и errorMessage, които правят комита и които сме си написали в отделен файл и така намаляваме количеството код.
 
-        successMessage(commit, "Welcome user."); //Подаваме commit-а като колбек, за да може да се ползва от функцията. А commit си е проперти, които идва на готово от екшъните.
+        successMessage(commit, `Welcome ${userCredential.user.email}`); //Подаваме commit-а като колбек, за да може да се ползва от функцията. А commit си е проперти, които идва на готово от екшъните.
 
         router.push("/user/dashboard");
       } catch (error) {
-        errorMessage(commit); //Ако не подадем съобщение за грешка, във функцията си имаме дефолтно.
+        errorMessage(commit, errorMessages(error.code)); //Ако не подадем съобщение за грешка, във функцията си имаме дефолтно.
+      } finally {
+        commit("notify/setLoading", false, { root: true });
       }
     },
   },
