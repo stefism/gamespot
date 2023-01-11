@@ -21,7 +21,7 @@
             </li>
           </ul>
 
-          <div>
+          <div v-if="isAdmin">
             <h6
               class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
             >
@@ -53,6 +53,7 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import {
   DashboardOutlined,
   UserOutlined,
@@ -66,6 +67,11 @@ export default {
     UserOutlined,
     ProfileOutlined,
     FileAddOutlined,
+  },
+  computed: {
+    ...mapGetters({
+      isAdmin: "auth/isUserAdmin",
+    }),
   },
 };
 </script>

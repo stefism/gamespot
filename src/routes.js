@@ -2,10 +2,10 @@ import { createRouter, createWebHistory, START_LOCATION } from "vue-router";
 import { getAuth, onAuthStateChanged } from "firebase/auth";
 import store from "@/store";
 
-import Home from "@/components/Home.vue";
-import ArticleInfo from "@/components/ArticleInfo.vue";
-import SignInOut from "@/components/User/SignInOut.vue";
-import Dashboard from "@/components/User/Dashboard.vue";
+import Home from "@/views/HomeView.vue";
+import ArticleInfo from "@/views/ArticleInfoView.vue";
+import SignInOut from "@/views/SignInOutView.vue";
+import Dashboard from "@/views/DashboardView.vue";
 import UserMain from "@/components/User/MainDashboard.vue";
 import UserProfile from "@/components/User/UserProfile.vue";
 import AdminArticles from "@/components/User/AdminArticles.vue";
