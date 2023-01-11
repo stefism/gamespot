@@ -1,4 +1,4 @@
-import { errorMessage, successMessage } from "@/Tools/vuex";
+import { errorMessage, successMessage } from "@/tools/vuex";
 import { db, auth } from "@/firebase";
 import {
   createUserWithEmailAndPassword,
@@ -6,7 +6,7 @@ import {
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import router from "@/routes";
-import errorMessages from "@/Tools/errorMessages";
+import errorMessages from "@/tools/errorMessages";
 
 const DEFAULT_USER = {
   uid: null,
