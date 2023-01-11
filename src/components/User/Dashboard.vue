@@ -11,12 +11,12 @@
           <ul class="nav flex-column">
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'dashboard' }"
-                >Dashboard</router-link
+                ><DashboardOutlined /> Dashboard</router-link
               >
             </li>
             <li class="nav-item">
               <router-link class="nav-link" :to="{ name: 'user_profile' }"
-                >Profile</router-link
+                ><UserOutlined /> Profile</router-link
               >
             </li>
           </ul>
@@ -31,12 +31,12 @@
             <ul class="nav flex-column mb-2">
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'admin_articles' }"
-                  >Articles</router-link
+                  ><ProfileOutlined /> Articles</router-link
                 >
               </li>
               <li class="nav-item">
                 <router-link class="nav-link" :to="{ name: 'admin_add' }"
-                  >Add article</router-link
+                  ><FileAddOutlined /> Add article</router-link
                 >
               </li>
             </ul>
@@ -53,7 +53,25 @@
 </template>
 
 <script>
-export default {};
+import {
+  DashboardOutlined,
+  UserOutlined,
+  ProfileOutlined,
+  FileAddOutlined,
+} from "@ant-design/icons-vue";
+
+export default {
+  components: {
+    DashboardOutlined,
+    UserOutlined,
+    ProfileOutlined,
+    FileAddOutlined,
+  },
+};
 </script>
 
-<style></style>
+<style scoped>
+#sidebarMenu .anticon {
+  font-size: 24px;
+}
+</style>
