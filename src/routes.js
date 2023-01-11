@@ -16,10 +16,16 @@ const routes = createRouter({
   routes: [
     { path: "/", component: Home, name: "home" },
     { path: "/article-info/:id", component: ArticleInfo, name: "articleInfo" },
-    { path: "/signin", component: SignInOut, name: "signInOut" },
+    {
+      path: "/signin",
+      component: SignInOut,
+      name: "signInOut",
+      meta: { signedIn: true },
+    },
     {
       path: "/user/dashboard",
       component: Dashboard,
+      meta: { isUserLogged: true },
       children: [
         { path: "", component: UserMain, name: "dashboard" },
         { path: "profile", component: UserProfile, name: "user_profile" },
@@ -36,7 +42,13 @@ const routes = createRouter({
 
 const auth = getAuth();
 const validateCheck = (to, from, next) => {
-  next();
+  if (to.meta.isUserLogged && !store.getters["auth/isUserAuth"]) {
+    next("/signin");
+  } else if (to.meta.signedIn && store.getters["auth/isUserAuth"]) {
+    next("/user/dashboard");
+  } else {
+    next();
+  }
   store.commit("notify/setLoading", false);
 };
 

@@ -26,7 +26,11 @@ const authenticationModule = {
   },
   getters: {
     isUserAuth(state) {
-      return state.auth;
+      if (state.auth == true) {
+        return true;
+      } else {
+        return false;
+      }
     },
     isUserAdmin(state) {
       return state.user.isAdmin;

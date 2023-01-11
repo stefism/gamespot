@@ -1,7 +1,13 @@
-<template>Articles</template>
+<template>
+  <DashboardTitle title="Articles" />
+</template>
 
 <script>
-export default {};
+import DashboardTitle from "@/components/DashboardTitle.vue";
+
+export default {
+  components: { DashboardTitle },
+};
 </script>
 
 <style></style>

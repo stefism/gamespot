@@ -1,7 +1,13 @@
-<template>dashboard content</template>
+<template>
+  <DashboardTitle title="Dashboard" />
+</template>
 
 <script>
-export default {};
+import DashboardTitle from "@/components/DashboardTitle.vue";
+
+export default {
+  components: { DashboardTitle },
+};
 </script>
 
 <style></style>

@@ -1,7 +1,13 @@
-<template>User profile</template>
+<template>
+  <DashboardTitle title="User Profile" />
+</template>
 
 <script>
-export default {};
+import DashboardTitle from "@/components/DashboardTitle.vue";
+
+export default {
+  components: { DashboardTitle },
+};
 </script>
 
 <style></style>
