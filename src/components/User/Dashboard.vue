@@ -24,7 +24,22 @@
           <div>
             <h6
               class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
-            ></h6>
+            >
+              <span>Admin</span>
+            </h6>
+
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'admin_articles' }"
+                  >Articles</router-link
+                >
+              </li>
+              <li class="nav-item">
+                <router-link class="nav-link" :to="{ name: 'admin_add' }"
+                  >Add article</router-link
+                >
+              </li>
+            </ul>
           </div>
         </div>
       </nav>
