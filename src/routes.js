@@ -6,6 +6,10 @@ import Home from "@/components/Home.vue";
 import ArticleInfo from "@/components/ArticleInfo.vue";
 import SignInOut from "@/components/User/SignInOut.vue";
 import Dashboard from "@/components/User/Dashboard.vue";
+import UserMain from "@/components/User/MainDashboard.vue";
+import UserProfile from "@/components/User/UserProfile.vue";
+import AdminArticles from "@/components/User/AdminArticles.vue";
+import AdminAddArticles from "@/components/User/AdminAddArticles.vue";
 
 const routes = createRouter({
   history: createWebHistory(),
@@ -13,7 +17,20 @@ const routes = createRouter({
     { path: "/", component: Home, name: "home" },
     { path: "/article-info/:id", component: ArticleInfo, name: "articleInfo" },
     { path: "/signin", component: SignInOut, name: "signInOut" },
-    { path: "/user/dashboard", component: Dashboard, name: "dashboard" },
+    {
+      path: "/user/dashboard",
+      component: Dashboard,
+      children: [
+        { path: "", component: UserMain, name: "dashboard" },
+        { path: "profile", component: UserProfile, name: "user_profile" },
+        { path: "articles", component: AdminArticles, name: "admin_articles" },
+        {
+          path: "articles/add",
+          component: AdminAddArticles,
+          name: "admin_add",
+        },
+      ],
+    },
   ],
 });
 
