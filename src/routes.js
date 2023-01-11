@@ -5,6 +5,7 @@ import store from "@/store";
 import Home from "@/components/Home.vue";
 import ArticleInfo from "@/components/ArticleInfo.vue";
 import SignInOut from "@/components/User/SignInOut.vue";
+import Dashboard from "@/components/User/Dashboard.vue";
 
 const routes = createRouter({
   history: createWebHistory(),
@@ -12,6 +13,7 @@ const routes = createRouter({
     { path: "/", component: Home, name: "home" },
     { path: "/article-info/:id", component: ArticleInfo, name: "articleInfo" },
     { path: "/signin", component: SignInOut, name: "signInOut" },
+    { path: "/user/dashboard", component: Dashboard, name: "dashboard" },
   ],
 });
 

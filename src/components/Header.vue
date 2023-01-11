@@ -8,14 +8,16 @@
       <div>
         <ul>
           <li>
-            <router-link to="/signin"> Sign in </router-link>
+            <router-link v-if="!isUserAuth" to="/signin"> Sign in </router-link>
           </li>
-          <li>
-            <span> Logout </span>
-          </li>
-          <li>
-            <router-link to="/user/dashboard"> Dashboard </router-link>
-          </li>
+          <span v-if="isUserAuth">
+            <li>
+              <span @click="logout"> Logout </span>
+            </li>
+            <li>
+              <router-link to="/user/dashboard"> Dashboard </router-link>
+            </li>
+          </span>
         </ul>
       </div>
     </div>
@@ -23,7 +25,21 @@
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters({
+      isUserAuth: "auth/isUserAuth",
+      isUserAdmin: "auth/isUserAdmin",
+    }),
+  },
+  methods: {
+    logout() {
+      this.$store.dispatch("auth/signOut");
+    },
+  },
+};
 </script>
 
 <style></style>

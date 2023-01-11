@@ -24,6 +24,14 @@ const authenticationModule = {
       auth: false,
     };
   },
+  getters: {
+    isUserAuth(state) {
+      return state.auth;
+    },
+    isUserAdmin(state) {
+      return state.user.isAdmin;
+    },
+  },
   mutations: {
     setUser(state, payload) {
       state.user = {
@@ -31,6 +39,10 @@ const authenticationModule = {
         ...payload, //Заместваме само пропертитата, които идват от payload с новите им стойности.
       };
       state.auth = true;
+    },
+    clearUser(state) {
+      state.user = DEFAULT_USER;
+      state.auth = false;
     },
   },
   actions: {
@@ -114,6 +126,16 @@ const authenticationModule = {
         return true;
       } catch (error) {
         errorMessage(commit, `Autosign failed , ${error}`);
+      }
+    },
+    async signOut({ commit }) {
+      try {
+        await auth.signOut();
+        commit("clearUser");
+        successMessage(commit, `Bye bye user`);
+        router.push("/");
+      } catch (error) {
+        errorMessage(commit, `Sign out failed, ${error}`);
       }
     },
   },
