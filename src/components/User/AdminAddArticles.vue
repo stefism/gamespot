@@ -60,6 +60,7 @@
           :errorMessage="errorMessage"
         >
           <option value="Select a rating" selected>Select a rating</option>
+          <!-- При валидацията имаме проперти .notOneOf, което ще изключи възможността да селектираме като value първия option "Select a rating". Мега яка и удобна валидация. -->
           <option v-for="rating in ratings" :key="rating" :value="rating">
             {{ rating }}
           </option>
@@ -67,6 +68,25 @@
         </FormElement>
       </Field>
     </div>
+
+    <br />
+
+    <div class="form-group">
+      <Field name="img" v-slot="{ field, errors, errorMessage }">
+        <FormElement
+          element="input"
+          type="text"
+          placeholder="Add the source of the image"
+          :field="field"
+          :errors="errors"
+          :errorMessage="errorMessage"
+        />
+      </Field>
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary">Add article</button>
   </Form>
 </template>
 
