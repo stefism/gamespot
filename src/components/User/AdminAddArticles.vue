@@ -47,6 +47,10 @@
 
     <br />
 
+    <TextEditor />
+
+    <br />
+
     <div class="form-group">
       <Field
         name="rating"
@@ -76,7 +80,7 @@
         <FormElement
           element="input"
           type="text"
-          placeholder="Add the source of the image"
+          placeholder="Add the image URL"
           :field="field"
           :errors="errors"
           :errorMessage="errorMessage"
@@ -91,13 +95,14 @@
 </template>
 
 <script>
-import { addArticlesSchema } from "@/tools/schemas";
 import FormElement from "@/components/FormElements.vue";
 import DashboardTitle from "@/components/DashboardTitle.vue";
+import TextEditor from "@/components/TextEditor.vue";
+import { addArticlesSchema } from "@/tools/schemas";
 import { Field, Form } from "vee-validate";
 
 export default {
-  components: { DashboardTitle, Field, Form, FormElement },
+  components: { DashboardTitle, Field, Form, FormElement, TextEditor },
   data() {
     return {
       formSchema: addArticlesSchema,

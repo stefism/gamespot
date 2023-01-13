@@ -17,7 +17,10 @@ const addArticlesSchema = {
     .string()
     .required("The rating is required.")
     .notOneOf(["Select a rating"], "You need to select a rating."), //Изважда от селекцията първата стойност. Не позволява да остане селектирано "Select a rating" като value. Мега яко.
-  img: yup.string(),
+  img: yup
+    .string()
+    .url("Please enter a valid URL.")
+    .required("The URL is required."),
 };
 
 export { addArticlesSchema };
