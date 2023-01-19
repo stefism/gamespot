@@ -49,8 +49,11 @@ export default {
   },
   mounted() {
     this.editor = new Editor({
-      content: "<p>I’m running Tiptap with Vue.js. 🎉</p>",
+      content: "",
       extensions: [StarterKit],
+      onUpdate: () => {
+        this.$emit("update", this.editor.getHTML());
+      },
     });
   },
 };

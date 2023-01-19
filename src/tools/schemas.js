@@ -12,7 +12,10 @@ const addArticlesSchema = {
     .required("The excerpt is required.")
     .min(20, "The excerpt must be between 20 to 500 characters.")
     .max(500, "The excerpt must be between 20 to 500 characters."),
-  editor: yup.string(),
+  editor: yup
+    .string()
+    .required("The content is required.")
+    .min(50, "The content must minimum 50 characters."),
   rating: yup
     .string()
     .required("The rating is required.")

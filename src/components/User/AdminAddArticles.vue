@@ -47,7 +47,18 @@
 
     <br />
 
-    <TextEditor />
+    <TextEditor @update="updateEditor" />
+    <!-- This field is needed to validate input from TextEditor because no way to use schema and validate directly from the editor. -->
+    <Field
+      name="editor"
+      v-model="textEditorContent"
+      v-slot="{ field, errors, errorMessage }"
+    >
+      <input type="hidden" id="veditor" v-bind="field" />
+      <div class="alert alert-danger" v-if="errors.length > 0">
+        {{ errorMessage }}
+      </div>
+    </Field>
 
     <br />
 
@@ -90,7 +101,9 @@
 
     <br />
 
-    <button type="submit" class="btn btn-primary">Add article</button>
+    <button type="submit" class="btn btn-primary" :disabled="loading">
+      Add article
+    </button>
   </Form>
 </template>
 
@@ -105,13 +118,22 @@ export default {
   components: { DashboardTitle, Field, Form, FormElement, TextEditor },
   data() {
     return {
+      loading: false,
+      textEditorContent: "",
       formSchema: addArticlesSchema,
       ratings: [1, 2, 3, 4, 5],
     };
   },
   methods: {
     onSubmit(values) {
+      this.loading = true;
+      this.$store.dispatch("articles/addArticle", values).finally(() => {
+        this.loading = false;
+      });
       console.log(values);
+    },
+    updateEditor(value) {
+      this.textEditorContent = value;
     },
   },
 };

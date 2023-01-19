@@ -35,6 +35,9 @@ const authenticationModule = {
     isUserAdmin(state) {
       return state.user.isAdmin;
     },
+    getUserData(state) {
+      return state.user;
+    },
   },
   mutations: {
     setUser(state, payload) {
