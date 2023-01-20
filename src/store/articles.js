@@ -1,5 +1,3 @@
-/* eslint-disable */
-
 import {
   doc,
   setDoc,
@@ -83,6 +81,33 @@ const articlesModule = {
 
         commit("setAdminArticles", articles);
         commit("setLastVisibleArticle", lastVisible);
+      } catch (error) {
+        errorMessage(commit, error);
+      }
+    },
+    async getMoreArticles({ commit, getters }, payload) {
+      try {
+        if (getters.getLastVisibleArticle) {
+          const oldArticles = getters.showAdminArticles;
+
+          const currQuery = query(
+            articlesCollection,
+            orderBy("timestamp", "desc"),
+            startAfter(getters.getLastVisibleArticle),
+            limit(payload.limit)
+          );
+
+          const querySnapshot = await getDocs(currQuery);
+          const newArticles = querySnapshot.docs.map((doc) => ({
+            id: doc.id,
+            ...doc.data(),
+          }));
+
+          const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+
+          commit("setAdminArticles", [...oldArticles, ...newArticles]);
+          commit("setLastVisibleArticle", lastVisible);
+        }
       } catch (error) {
         errorMessage(commit, error);
       }

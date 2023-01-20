@@ -38,6 +38,8 @@
         </a-popconfirm>
       </template>
     </a-table>
+    <br />
+    <button class="btn btn-secondary">Get more articles</button>
   </div>
 </template>
 
@@ -58,10 +60,10 @@ export default {
     },
   },
   mounted() {
-    this.getAdminArticles({ limit: 3 });
+    this.getAdminArticles({ limit: 1 });
   },
   methods: {
-    ...mapActions("articles", ["getAdminArticles"]),
+    ...mapActions("articles", ["getAdminArticles", "getMoreArticles"]),
     removeArticleById(articleId) {
       console.log(articleId);
     },
