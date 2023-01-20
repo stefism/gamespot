@@ -1,4 +1,16 @@
-import { doc, setDoc, collection, serverTimestamp } from "firebase/firestore";
+/* eslint-disable */
+
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  serverTimestamp,
+  query,
+  limit,
+  orderBy,
+  startAfter,
+} from "firebase/firestore";
 import { successMessage, errorMessage } from "@/tools/vuex";
 import { db } from "@/firebase";
 import router from "@/routes";
@@ -8,7 +20,26 @@ let articlesCollection = collection(db, "articles"); //Създаваме нов
 const articlesModule = {
   namespaced: true,
   state() {
-    return {};
+    return {
+      adminArticles: [],
+      lastVisibleArticle: null,
+    };
+  },
+  getters: {
+    showAdminArticles(state) {
+      return state.adminArticles;
+    },
+    getLastVisibleArticle(state) {
+      return state.lastVisibleArticle;
+    },
+  },
+  mutations: {
+    setAdminArticles(state, articles) {
+      state.adminArticles = articles;
+    },
+    setLastVisibleArticle(state, payload) {
+      state.lastVisibleArticle = payload;
+    },
   },
   actions: {
     async addArticle({ commit, rootGetters }, payload) {
@@ -31,6 +62,27 @@ const articlesModule = {
 
         router.push({ name: "admin_articles" });
         successMessage(commit, "Article added successfully");
+      } catch (error) {
+        errorMessage(commit, error);
+      }
+    },
+    async getAdminArticles({ commit }, payload) {
+      try {
+        const currQuery = query(
+          articlesCollection,
+          orderBy("timestamp", "desc"),
+          limit(payload.limit)
+        );
+        const querySnapshot = await getDocs(currQuery);
+
+        const lastVisible = querySnapshot.docs[querySnapshot.docs.length - 1];
+        const articles = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        commit("setAdminArticles", articles);
+        commit("setLastVisibleArticle", lastVisible);
       } catch (error) {
         errorMessage(commit, error);
       }
