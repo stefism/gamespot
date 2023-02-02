@@ -10,6 +10,7 @@ import UserMain from "@/components/User/MainDashboard.vue";
 import UserProfile from "@/components/User/UserProfile.vue";
 import AdminArticles from "@/components/User/AdminArticles.vue";
 import AdminAddArticles from "@/components/User/AdminAddArticles.vue";
+import NotFound from "@/views/404View.vue";
 
 const routes = createRouter({
   history: createWebHistory(),
@@ -37,6 +38,7 @@ const routes = createRouter({
         },
       ],
     },
+    { path: "/:notFound(.*)*", component: NotFound, name: "404" },
   ],
 });
 

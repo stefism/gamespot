@@ -130,7 +130,6 @@ export default {
       this.$store.dispatch("articles/addArticle", values).finally(() => {
         this.loading = false;
       });
-      console.log(values);
     },
     updateEditor(value) {
       this.textEditorContent = value;
