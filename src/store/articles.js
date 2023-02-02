@@ -1,7 +1,9 @@
 import {
   doc,
   setDoc,
+  getDoc,
   getDocs,
+  deleteDoc,
   collection,
   serverTimestamp,
   query,
@@ -19,11 +21,15 @@ const articlesModule = {
   namespaced: true,
   state() {
     return {
+      homeArticles: [],
       adminArticles: [],
       lastVisibleArticle: null,
     };
   },
   getters: {
+    getHomeArticles(state) {
+      return state.homeArticles;
+    },
     showAdminArticles(state) {
       return state.adminArticles;
     },
@@ -32,6 +38,9 @@ const articlesModule = {
     },
   },
   mutations: {
+    setHomeArticles(state, articles) {
+      state.homeArticles = articles;
+    },
     setAdminArticles(state, articles) {
       state.adminArticles = articles;
     },
@@ -40,6 +49,20 @@ const articlesModule = {
     },
   },
   actions: {
+    async getArticle({ commit }, articleId) {
+      try {
+        const docSnap = await getDoc(doc(db, "articles", articleId));
+
+        if (docSnap.exists()) {
+          return docSnap.data();
+        } else {
+          errorMessage(commit, "Ups. Article with this id is not exist.");
+          this.$router.push({ name: "404 " });
+        }
+      } catch (error) {
+        errorMessage(commit, error);
+      }
+    },
     async addArticle({ commit, rootGetters }, payload) {
       try {
         const user = rootGetters["auth/getUserData"]; //Когато викаме гетери от един модул в друг, ползваме rootGetters.
@@ -58,8 +81,26 @@ const articlesModule = {
           ...payload,
         }); //Правим заявка до базата и записваме този документ с тези данни в съответната колекция.
 
-        router.push({ name: "admin_articles" });
+        router.push({ name: "admin_articles", params: { reload: true } });
         successMessage(commit, "Article added successfully");
+      } catch (error) {
+        errorMessage(commit, error);
+      }
+    },
+    async getArticles({ commit }, payload) {
+      try {
+        const currQuery = query(
+          articlesCollection,
+          orderBy("timestamp", "desc"),
+          limit(payload.limit)
+        );
+        const querySnapshot = await getDocs(currQuery);
+        const articles = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+
+        commit("setHomeArticles", articles);
       } catch (error) {
         errorMessage(commit, error);
       }
@@ -108,6 +149,18 @@ const articlesModule = {
           commit("setAdminArticles", [...oldArticles, ...newArticles]);
           commit("setLastVisibleArticle", lastVisible);
         }
+      } catch (error) {
+        errorMessage(commit, error);
+      }
+    },
+    async removeArticleById({ commit, state }, articleId) {
+      //articleId = payload
+      try {
+        await deleteDoc(doc(db, "articles", articleId));
+
+        const newList = state.adminArticles.filter((a) => a.id != articleId);
+        commit("setAdminArticles", newList);
+        successMessage(commit, "Article deleted successfully");
       } catch (error) {
         errorMessage(commit, error);
       }

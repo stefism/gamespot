@@ -1,7 +1,7 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="container">
-    <Carousel :slides="homeArticles" />
+    <Carousel :slides="slidesArticles" />
     <Featured :articles="homeArticles" />
   </div>
 </template>
@@ -13,9 +13,20 @@ import Featured from "@/components/Featured.vue";
 export default {
   components: { Carousel, Featured },
   data() {
-    return {
-      homeArticles: [{ id: 1 }, { id: 2 }, { id: 3 }],
-    };
+    return {};
+  },
+  computed: {
+    homeArticles() {
+      return this.$store.getters["articles/getHomeArticles"];
+    },
+    slidesArticles() {
+      const articles = this.$store.getters["articles/getHomeArticles"];
+      const slicedArray = articles.slice(0, 4);
+      return slicedArray;
+    },
+  },
+  mounted() {
+    this.$store.dispatch("articles/getArticles", { limit: 8 });
   },
 };
 </script>

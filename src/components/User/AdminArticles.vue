@@ -39,7 +39,9 @@
       </template>
     </a-table>
     <br />
-    <button class="btn btn-secondary">Get more articles</button>
+    <button @click="getMoreArticles({ limit: 1 })" class="btn btn-secondary">
+      Get more articles
+    </button>
   </div>
 </template>
 
@@ -60,13 +62,18 @@ export default {
     },
   },
   mounted() {
-    this.getAdminArticles({ limit: 1 });
+    const reload = this.$route.params.reload;
+
+    if (reload || this.adminArticles.length == 0) {
+      this.getAdminArticles({ limit: 1 });
+    }
   },
   methods: {
-    ...mapActions("articles", ["getAdminArticles", "getMoreArticles"]),
-    removeArticleById(articleId) {
-      console.log(articleId);
-    },
+    ...mapActions("articles", [
+      "getAdminArticles",
+      "getMoreArticles",
+      "removeArticleById",
+    ]),
   },
 };
 
