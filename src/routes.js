@@ -10,6 +10,7 @@ import UserMain from "@/components/User/MainDashboard.vue";
 import UserProfile from "@/components/User/UserProfile.vue";
 import AdminArticles from "@/components/User/AdminArticles.vue";
 import AdminAddArticles from "@/components/User/AdminAddArticles.vue";
+import AdminEditArticle from "@/components/User/AdminEditArticle.vue";
 import NotFound from "@/views/404View.vue";
 
 const routes = createRouter({
@@ -35,6 +36,11 @@ const routes = createRouter({
           path: "articles/add",
           component: AdminAddArticles,
           name: "admin_add",
+        },
+        {
+          path: "articles/edit/:id",
+          component: AdminEditArticle,
+          name: "admin_edit",
         },
       ],
     },

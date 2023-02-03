@@ -27,6 +27,12 @@
         <span>{{ record.timestamp.toDate().toDateString() }}</span>
       </template>
 
+      <template #edit="{ record }">
+        <router-link :to="{ name: 'admin_edit', params: { id: record.id } }">
+          <button class="btn btn-primary btn-sm">Edit article</button>
+        </router-link>
+      </template>
+
       <template #delete="{ record }">
         <a-popconfirm
           title="Are you sure?"
@@ -43,14 +49,18 @@
       Get more articles
     </button>
   </div>
+  <div v-else>
+    <Loader />
+  </div>
 </template>
 
 <script>
 import DashboardTitle from "@/components/DashboardTitle.vue";
+import Loader from "@/components/Loader.vue";
 import { mapActions } from "vuex";
 
 export default {
-  components: { DashboardTitle },
+  components: { DashboardTitle, Loader },
   data() {
     return {
       columns,
@@ -97,6 +107,10 @@ const columns = [
   {
     title: "",
     slots: { customRender: "delete" },
+  },
+  {
+    title: "",
+    slots: { customRender: "edit" },
   },
 ];
 </script>

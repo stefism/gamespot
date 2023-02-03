@@ -4,7 +4,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
 } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import router from "@/routes";
 import errorMessages from "@/tools/errorMessages";
 
@@ -37,6 +37,9 @@ const authenticationModule = {
     },
     getUserData(state) {
       return state.user;
+    },
+    getUserId(state) {
+      return state.user.uid;
     },
   },
   mutations: {
@@ -143,6 +146,30 @@ const authenticationModule = {
         router.push("/");
       } catch (error) {
         errorMessage(commit, `Sign out failed, ${error}`);
+      }
+    },
+    async updateProfile({ commit, getters }, payload) {
+      try {
+        const userRef = doc(db, "users", getters.getUserId);
+        const userData = getters.getUserData;
+
+        if (
+          payload.firstName == userData.firstName &&
+          payload.lastName == userData.lastName
+        ) {
+          errorMessage(commit, "They are the same. :/");
+          return false;
+        }
+
+        await updateDoc(userRef, {
+          ...payload,
+        });
+
+        commit("setUser", payload);
+
+        successMessage(commit, `User profile now updated`);
+      } catch (error) {
+        errorMessage(commit, error);
       }
     },
   },

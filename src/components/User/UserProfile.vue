@@ -74,10 +74,7 @@ export default {
   methods: {
     onSubmit(values) {
       console.log(values);
-      // this.loading = true;
-      // this.$store.dispatch("articles/addArticle", values).finally(() => {
-      //   this.loading = false;
-      // });
+      this.$store.dispatch("auth/updateProfile", values);
     },
   },
 };

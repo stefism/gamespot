@@ -1,6 +1,6 @@
 <template>
-  <DashboardTitle title="Add Article" />
-  <ArticleForm :isEdit="false" />
+  <DashboardTitle title="Edit Article" />
+  <ArticleForm :isEdit="true" />
 </template>
 
 <script>
