@@ -1,4 +1,10 @@
 <template>
+  <!-- <router-link
+    :to="{ name: 'admin_edit', params: { id: 'E3ze4cuEcwo5hwUVeuDX' } }"
+  >
+    CHANGE
+  </router-link> -->
+  <!-- Тест на метода beforeRouteUpdate, който нещо не се държи според очакваното. Не влиза в него. -->
   <Form
     @submit="onSubmit"
     :validation-schema="formSchema"
@@ -94,9 +100,26 @@
 
     <br />
 
-    <TextEditor @update="updateEditor" />
+    <TextEditor
+      v-if="article.editor"
+      @update="updateEditor"
+      :content="article.editor"
+    />
+    <TextEditor v-else @update="updateEditor" :content="article.editor" />
     <!-- This field is needed to validate input from TextEditor because no way to use schema and validate directly from the editor. -->
     <Field
+      v-if="isEdit"
+      name="editor"
+      v-model="textEditorContent"
+      v-slot="{ field, errors, errorMessage }"
+    >
+      <input type="hidden" id="veditor" v-bind="field" />
+      <div class="alert alert-danger" v-if="errors.length > 0">
+        {{ errorMessage }}
+      </div>
+    </Field>
+    <Field
+      v-else
       name="editor"
       v-model="textEditorContent"
       v-slot="{ field, errors, errorMessage }"
@@ -111,6 +134,28 @@
 
     <div class="form-group">
       <Field
+        v-if="isEdit"
+        name="rating"
+        value="Select a rating"
+        v-model="article.rating"
+        v-slot="{ field, errors, errorMessage }"
+      >
+        <FormElement
+          element="select"
+          :field="field"
+          :errors="errors"
+          :errorMessage="errorMessage"
+        >
+          <option value="Select a rating" selected>Select a rating</option>
+          <!-- При валидацията имаме проперти .notOneOf, което ще изключи възможността да селектираме като value първия option "Select a rating". Мега яка и удобна валидация. -->
+          <option v-for="rating in ratings" :key="rating" :value="rating">
+            {{ rating }}
+          </option>
+          <!-- Във FormElements.vue, където е този компонент, има <slot />, който ще приеме всички <option>-и и ще ги подаде на компонента <select> -->
+        </FormElement>
+      </Field>
+      <Field
+        v-else
         name="rating"
         value="Select a rating"
         v-slot="{ field, errors, errorMessage }"
@@ -134,7 +179,22 @@
     <br />
 
     <div class="form-group">
-      <Field name="img" v-slot="{ field, errors, errorMessage }">
+      <Field
+        v-if="isEdit"
+        v-model="article.img"
+        name="img"
+        v-slot="{ field, errors, errorMessage }"
+      >
+        <FormElement
+          element="input"
+          type="text"
+          placeholder="Add the image URL"
+          :field="field"
+          :errors="errors"
+          :errorMessage="errorMessage"
+        />
+      </Field>
+      <Field v-else name="img" v-slot="{ field, errors, errorMessage }">
         <FormElement
           element="input"
           type="text"
@@ -149,7 +209,7 @@
     <br />
 
     <button type="submit" class="btn btn-primary" :disabled="loading">
-      Add article
+      {{ isEdit ? "Save changes" : "Add article" }}
     </button>
   </Form>
 </template>
@@ -172,21 +232,42 @@ export default {
       ratings: [1, 2, 3, 4, 5],
     };
   },
+  beforeRouteUpdate(to) {
+    console.log("BEFORE");
+    this.getArticle(to.params.id);
+    //Този лайф сайкъл не бачка, незнайно защо.
+  },
   mounted() {
-    if (this.isEdit) {
-      this.$store
-        .dispatch("articles/getArticle", this.$route.params.id)
-        .then((article) => {
-          this.article = article;
-        });
-    }
+    this.getArticle(this.$route.params.id);
   },
   methods: {
     onSubmit(values) {
       this.loading = true;
-      this.$store.dispatch("articles/addArticle", values).finally(() => {
-        this.loading = false;
-      });
+      if (this.isEdit) {
+        this.$store
+          .dispatch("articles/updateArticle", {
+            values,
+            id: this.$route.params.id,
+          })
+          .finally(() => {
+            this.loading = false;
+          });
+      } else {
+        this.$store.dispatch("articles/addArticle", values).finally(() => {
+          this.loading = false;
+        });
+      }
+    },
+    getArticle(id) {
+      if (this.isEdit) {
+        this.$store.dispatch("articles/getArticle", id).then((article) => {
+          if (article) {
+            this.article = article;
+          } else {
+            this.$router.push({ name: "404" });
+          }
+        });
+      }
     },
     updateEditor(value) {
       this.textEditorContent = value;

@@ -2,6 +2,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  updateDoc,
   getDocs,
   deleteDoc,
   collection,
@@ -101,6 +102,15 @@ const articlesModule = {
         }));
 
         commit("setHomeArticles", articles);
+      } catch (error) {
+        errorMessage(commit, error);
+      }
+    },
+    async updateArticle({ commit }, payload) {
+      try {
+        const docRef = doc(db, "articles", payload.id);
+        await updateDoc(docRef, { ...payload.values }); //С трите точки отпред заместваме само пропертитата, които са редактирани. Останалите си остават същите.
+        successMessage(commit, "Article now updated");
       } catch (error) {
         errorMessage(commit, error);
       }
