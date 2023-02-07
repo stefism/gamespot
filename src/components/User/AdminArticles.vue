@@ -72,9 +72,10 @@ export default {
     },
   },
   mounted() {
-    const reload = this.$route.params.reload;
-
-    if (reload || this.adminArticles.length == 0) {
+    if (
+      this.$route.query.reload != undefined ||
+      this.adminArticles.length == 0
+    ) {
       this.getAdminArticles({ limit: 1 });
     }
   },

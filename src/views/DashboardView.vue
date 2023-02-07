@@ -21,7 +21,8 @@
             </li>
           </ul>
 
-          <div v-if="isAdmin">
+          <!-- v-if="isAdmin" in this div removed to allow in all user to make changes -->
+          <div>
             <h6
               class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted"
             >

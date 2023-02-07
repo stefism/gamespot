@@ -58,7 +58,7 @@ const articlesModule = {
           return docSnap.data();
         } else {
           errorMessage(commit, "Ups. Article with this id is not exist.");
-          this.$router.push({ name: "404 " });
+          router.push({ name: "404 " });
         }
       } catch (error) {
         errorMessage(commit, error);
@@ -82,7 +82,7 @@ const articlesModule = {
           ...payload,
         }); //Правим заявка до базата и записваме този документ с тези данни в съответната колекция.
 
-        router.push({ name: "admin_articles", params: { reload: true } });
+        router.push({ name: "admin_articles", query: { reload: true } });
         successMessage(commit, "Article added successfully");
       } catch (error) {
         errorMessage(commit, error);
