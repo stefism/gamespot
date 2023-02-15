@@ -10,9 +10,10 @@
   "dependencies": {
     "core-js": "^3.8.3",
     "vue": "^2.6.14",
-    "vue-carrousel": "^1.0.5",
+    "vue-carousel": "^0.18.0",
     "vue-material": "^1.0.0-beta-15",
     "vue-resource": "^1.5.3",
+    "vue-router": "^3.0.1",
     "vue-scroll-reveal": "^1.0.11",
     "vuex": "^3.0.1"
   },
