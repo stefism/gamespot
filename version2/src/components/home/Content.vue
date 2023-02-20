@@ -15,6 +15,11 @@
             <div>{{ post.description }}</div>
           </div>
         </md-card-header>
+        <md-card-actions>
+          <app-button type="link" linkTo="#" :addClass="['small_link']"
+            >See review</app-button
+          >
+        </md-card-actions>
       </md-card>
     </div>
   </div>
