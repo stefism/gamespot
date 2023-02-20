@@ -1,13 +1,17 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-  <div><Featured /></div>
+  <div>
+    <Featured />
+    <Content />
+  </div>
 </template>
 
 <script>
 import Featured from "./Featured.vue";
+import Content from "./Content.vue";
 
 export default {
-  components: { Featured },
+  components: { Featured, Content },
 };
 </script>
 

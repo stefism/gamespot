@@ -7,7 +7,23 @@
           <div class="gradient">
             <div class="container">
               <div class="content">
-                Button
+                <app-button
+                  type="btn"
+                  linkTo="#"
+                  :addClass="['hello', 'there']"
+                  :ovStyle="{ color: 'yellow' }"
+                  :action="trigger"
+                  >Button function
+                </app-button>
+                <app-button
+                  type="link"
+                  linkTo="#"
+                  :addClass="['hello', 'there']"
+                  :ovStyle="{ color: 'yellow' }"
+                  :action="trigger"
+                  >See review
+                </app-button>
+                <!-- :addClass - Добавяме повече от един клас към бутона -->
                 <div class="item">
                   {{ slide.title }}
                 </div>
@@ -50,6 +66,11 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    trigger() {
+      alert("Button");
+    },
   },
 };
 </script>
