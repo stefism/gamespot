@@ -32,7 +32,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      console.log(this.formData);
+      this.$store.dispatch("admin/signIn", this.formData);
     },
   },
 };

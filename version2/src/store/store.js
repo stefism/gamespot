@@ -5,5 +5,5 @@ import admin from "./adminModule";
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  modules: { admin },
+  modules: { admin: admin },
 });
