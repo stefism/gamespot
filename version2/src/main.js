@@ -4,12 +4,14 @@ import router from "@/routes";
 import Button from "@/components/Button.vue";
 import store from "./store/store.js";
 import VueResource from "vue-resource";
+import vuelidate from "vuelidate";
 
 import { MdCard } from "vue-material/dist/components";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
 
 Vue.use(MdCard);
+Vue.use(vuelidate);
 Vue.use(VueResource);
 Vue.http.options.root = "";
 

@@ -11,6 +11,11 @@ import Header from "@/components/Header.vue";
 import Footer from "@/components/Footer.vue";
 export default {
   components: { Header, Footer },
+  created() {
+    console.log("this.$route", this.$route);
+    console.log("this.$routeR", this.$router);
+    this.$store.dispatch("admin/refreshToken");
+  },
 };
 </script>
 

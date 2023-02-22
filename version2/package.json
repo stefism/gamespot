@@ -15,6 +15,7 @@
     "vue-resource": "^1.5.3",
     "vue-router": "^3.0.1",
     "vue-scroll-reveal": "^1.0.11",
+    "vuelidate": "^0.7.7",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
