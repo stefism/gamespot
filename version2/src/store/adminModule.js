@@ -3,10 +3,13 @@ import router from "@/routes";
 
 const fbAuth = "https://identitytoolkit.googleapis.com/v1";
 const fbApiKey = process.env.VUE_APP_FIREBASE_API_KEY;
+const databaseUrl =
+  "https://gamespot-713b6-default-rtdb.europe-west1.firebasedatabase.app";
 
 const admin = {
   namespaced: true,
   state: {
+    addPost: false,
     token: null,
     refresh: null,
     refreshLoading: true,
@@ -23,6 +26,9 @@ const admin = {
     },
     refreshLoading(state) {
       return state.refreshLoading;
+    },
+    addPostStatus(state) {
+      return state.addPost;
     },
   },
   mutations: {
@@ -49,6 +55,9 @@ const admin = {
     },
     refreshLoading(state) {
       state.refreshLoading = false;
+    },
+    addPostIndicate(state) {
+      state.addPost = true;
     },
   },
   actions: {
@@ -113,6 +122,15 @@ const admin = {
       } else {
         commit("refreshLoading"); //Това е необходимо за да може ако си бил на dashboard страницата, логнал си се и рефрешнеш приложението, да не те праща пак на началната страница, а да си останеш на dashboard страницата.
       }
+    },
+    // eslint-disable-next-line no-unused-vars
+    addPost({ commit, state }, payload) {
+      Vue.http
+        .post(`${databaseUrl}/posts.json?auth=${state.token}`, payload)
+        .then((response) => {
+          console.log(response);
+          commit("addPostIndicate");
+        });
     },
   },
 };

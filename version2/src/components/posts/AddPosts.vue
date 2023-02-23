@@ -71,6 +71,10 @@
         <md-button @click="cancelDialog" class="md-primary">Cancel</md-button>
       </md-dialog-actions>
     </md-dialog>
+
+    <div v-if="addPostStatus" class="post_succesfull">
+      Your post was posted.
+    </div>
   </div>
 </template>
 
@@ -88,6 +92,11 @@ export default {
       },
     };
   },
+  computed: {
+    addPostStatus() {
+      return this.$store.getters["admin/addPostStatus"];
+    },
+  },
   methods: {
     submitHandler() {
       if (this.formData.content == "") {
@@ -103,7 +112,9 @@ export default {
     cancelDialog() {
       this.dialog = false;
     },
-    addPost() {},
+    addPost() {
+      this.$store.dispatch("admin/addPost", this.formData);
+    },
   },
   validations: {
     formData: {
