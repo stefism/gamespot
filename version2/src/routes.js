@@ -1,3 +1,4 @@
+/* eslint-disable */
 import Vue from "vue";
 import VueRouter from "vue-router";
 import store from "./store/store";
@@ -5,6 +6,9 @@ import store from "./store/store";
 import Home from "@/components/home/Index.vue";
 import SignIn from "@/components/SignIn.vue";
 import Dashboard from "@/components/Dashboard.vue";
+import DashboardWelcome from "@/components/posts/DashboardWelcome.vue";
+import AddPosts from "@/components/posts/AddPosts.vue";
+import ListOfPosts from "@/components/posts/ListOfPosts.vue";
 
 Vue.use(VueRouter);
 
@@ -43,7 +47,16 @@ const authGuard = {
 const routes = [
   { path: "/", component: Home },
   { path: "/signin", component: SignIn, ...authGuard },
-  { path: "/dashboard", component: Dashboard, ...authGuard },
+  {
+    path: "/dashboard",
+    component: Dashboard,
+    children: [
+      { path: "/", component: DashboardWelcome },
+      { path: "add_posts", component: AddPosts },
+      { path: "posts_list", component: ListOfPosts },
+    ],
+    ...authGuard,
+  },
 ];
 
 export default new VueRouter({
