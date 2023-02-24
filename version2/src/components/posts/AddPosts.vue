@@ -2,6 +2,14 @@
   <div class="dashboard_form">
     <h1>Add posts</h1>
     <form @submit.prevent="submitHandler">
+      <div v-if="uploadedImageUrl">
+        <img :src="uploadedImageUrl" alt="" />
+      </div>
+
+      <div class="input_field">
+        <input type="file" @change="processFile($event)" />
+      </div>
+
       <div class="input_field" :class="{ invalid: $v.formData.title.$error }">
         <label>Title</label>
         <input
@@ -72,9 +80,17 @@
       </md-dialog-actions>
     </md-dialog>
 
-    <div v-if="addPostStatus" class="post_succesfull">
-      Your post was posted.
-    </div>
+    <md-snackbar
+      md-position="center"
+      :md-duration="4000"
+      :md-active.sync="addPostStatus"
+      md-persistent
+    >
+      <span>Your post was posted.</span>
+      <md-button style="color: white" class="md-primary" @click="closeMessage"
+        >Close</md-button
+      >
+    </md-snackbar>
   </div>
 </template>
 
@@ -85,6 +101,7 @@ export default {
     return {
       dialog: false,
       formData: {
+        img: "",
         title: "",
         description: "",
         content: "",
@@ -93,11 +110,55 @@ export default {
     };
   },
   computed: {
-    addPostStatus() {
-      return this.$store.getters["admin/addPostStatus"];
+    uploadedImageUrl() {
+      let imageUrl = this.$store.getters["admin/getUploadedImageUrl"];
+      this.setImageUrl(imageUrl);
+      return this.$store.getters["admin/getUploadedImageUrl"];
+    },
+    addPostStatus: {
+      get: function () {
+        return this.$store.getters["admin/addPostStatus"];
+      },
+      set: function () {
+        let status = this.$store.getters["admin/addPostStatus"];
+        if (status) {
+          this.clearPost();
+        }
+        return status;
+      },
+      //Ако не сложим гетер и сетер, дава грешка, че няма сетер или гетер.
+      // let status = this.$store.getters["admin/addPostStatus"];
+      // if (status) {
+      //   this.clearPost();
+
+      // this.formData = {
+      // title: "",
+      // description: "",
+      // content: "",
+      // rating: "",
+      // };
+      // return status;
+      // },
+      //Ако го сложим това директно тука, издава грешка Unexpected side effect in "addPostStatus" computed property. Затова го правим в отделен метод и викаме метода и така няма грешка-
     },
   },
   methods: {
+    setImageUrl(url) {
+      this.formData.img = url;
+    },
+    closeMessage() {
+      this.$store.commit("admin/addPostClose");
+    },
+    clearPost() {
+      this.$v.$reset(); //Ресетваме валидацията да не дава грешки, след като изчистиме формата.
+
+      this.formData = {
+        title: "",
+        description: "",
+        content: "",
+        rating: "",
+      };
+    },
     submitHandler() {
       if (this.formData.content == "") {
         this.dialog = true;
@@ -114,6 +175,10 @@ export default {
     },
     addPost() {
       this.$store.dispatch("admin/addPost", this.formData);
+    },
+    processFile(event) {
+      let file = event.target.files[0];
+      this.$store.dispatch("admin/imageUpload", file);
     },
   },
   validations: {
@@ -132,5 +197,9 @@ export default {
 .input_field.invalid input,
 .input_field.invalid select {
   border: 2px solid red;
+}
+
+.md-snackbar.md-theme-default {
+  background-color: #19ae26;
 }
 </style>

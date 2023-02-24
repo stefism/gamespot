@@ -15,6 +15,7 @@ const admin = {
     refreshLoading: true,
     authFailed: false,
     authError: "",
+    uploadedImageUrl: null,
   },
   getters: {
     isAuth(state) {
@@ -29,6 +30,9 @@ const admin = {
     },
     addPostStatus(state) {
       return state.addPost;
+    },
+    getUploadedImageUrl(state) {
+      return state.uploadedImageUrl;
     },
   },
   mutations: {
@@ -58,6 +62,12 @@ const admin = {
     },
     addPostIndicate(state) {
       state.addPost = true;
+    },
+    addPostClose(state) {
+      state.addPost = false;
+    },
+    setImageUrl(state, imageUrl) {
+      state.uploadedImageUrl = imageUrl;
     },
   },
   actions: {
@@ -130,6 +140,27 @@ const admin = {
         .then((response) => {
           console.log(response);
           commit("addPostIndicate");
+        });
+    },
+    // eslint-disable-next-line no-unused-vars
+    imageUpload({ commit }, file) {
+      const cloudinaryURL =
+        "https://api.cloudinary.com/v1_1/dzowqbykc/image/upload";
+      const preset = "tbu1x9zm";
+
+      let formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", preset);
+
+      Vue.http
+        .post(cloudinaryURL, formData, {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          commit("setImageUrl", response.body.secure_url);
         });
     },
   },

@@ -12,6 +12,7 @@ import {
   MdButton,
   MdDialog,
   MdContent,
+  MdSnackbar,
 } from "vue-material/dist/components";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
@@ -20,6 +21,7 @@ Vue.use(MdCard);
 Vue.use(MdButton);
 Vue.use(MdDialog);
 Vue.use(MdContent);
+Vue.use(MdSnackbar);
 
 Vue.use(vuelidate);
 Vue.use(wysiwyg, {});
