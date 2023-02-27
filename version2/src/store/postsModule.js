@@ -8,15 +8,22 @@ const posts = {
   namespaced: true,
   state: {
     homePosts: null,
+    postById: null,
   },
   getters: {
     returnAllPosts(state) {
       return state.homePosts;
     },
+    returnPostById(state) {
+      return state.postById;
+    },
   },
   mutations: {
     setAllPosts(state, posts) {
       state.homePosts = posts;
+    },
+    setPostById(state, post) {
+      state.postById = post;
     },
   },
   actions: {
@@ -36,6 +43,18 @@ const posts = {
           }
 
           commit("setAllPosts", posts.reverse());
+        });
+    },
+
+    getPostById({ commit }, postId) {
+      Vue.http
+        .get(`${databaseUrl}/posts.json?orderBy="$key"&equalTo="${postId}"`)
+        .then((response) => {
+          const postKey = Object.keys(response.body)[0];
+          let post = response.body[postKey];
+          post.id = Object.keys(response.body)[0];
+
+          commit("setPostById", post);
         });
     },
   },

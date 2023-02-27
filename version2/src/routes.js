@@ -9,6 +9,7 @@ import Dashboard from "@/components/Dashboard.vue";
 import DashboardWelcome from "@/components/posts/DashboardWelcome.vue";
 import AddPosts from "@/components/posts/AddPosts.vue";
 import ListOfPosts from "@/components/posts/ListOfPosts.vue";
+import PostView from "@/components/posts/PostView.vue";
 
 Vue.use(VueRouter);
 
@@ -47,6 +48,7 @@ const authGuard = {
 const routes = [
   { path: "/", component: Home },
   { path: "/signin", component: SignIn, ...authGuard },
+  { path: "/posts/:id", component: PostView },
   {
     path: "/dashboard",
     component: Dashboard,

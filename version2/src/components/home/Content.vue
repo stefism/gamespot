@@ -23,6 +23,11 @@
         </md-card-actions>
       </md-card>
     </div>
+    <div class="load_more">
+      <app-button type="btn" :addClass="['small_link']" :action="loadMore"
+        >Load more
+      </app-button>
+    </div>
   </div>
 </template>
 
@@ -37,6 +42,13 @@ export default {
   computed: {
     posts() {
       return this.$store.getters["posts/returnAllPosts"];
+    },
+  },
+  methods: {
+    loadMore() {
+      this.$store.dispatch("posts/getAllPosts", {
+        limit: this.posts.length + 3,
+      }); //Firebase Realtime Database не поддържа от - до взимане на данни и затова ползваме този израз.
     },
   },
 };
