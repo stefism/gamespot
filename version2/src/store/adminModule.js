@@ -69,6 +69,9 @@ const admin = {
     setImageUrl(state, imageUrl) {
       state.uploadedImageUrl = imageUrl;
     },
+    clearImageUpload(state) {
+      state.uploadedImageUrl = null;
+    },
   },
   actions: {
     // eslint-disable-next-line no-unused-vars

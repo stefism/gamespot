@@ -7,7 +7,7 @@
       </div>
 
       <div class="input_field">
-        <input type="file" @change="processFile($event)" />
+        <input type="file" @change="processFile($event)" ref="myFileInput" />
       </div>
 
       <div class="input_field" :class="{ invalid: $v.formData.title.$error }">
@@ -109,6 +109,9 @@ export default {
       },
     };
   },
+  destroyed() {
+    this.$store.commit("admin/clearImageUpload");
+  },
   computed: {
     uploadedImageUrl() {
       let imageUrl = this.$store.getters["admin/getUploadedImageUrl"];
@@ -117,12 +120,18 @@ export default {
     },
     addPostStatus: {
       get: function () {
+        let status = this.$store.getters["admin/addPostStatus"];
+        if (status) {
+          this.clearPost();
+          this.$store.commit("admin/clearImageUpload");
+        }
         return this.$store.getters["admin/addPostStatus"];
       },
       set: function () {
         let status = this.$store.getters["admin/addPostStatus"];
         if (status) {
           this.clearPost();
+          this.$store.commit("admin/clearImageUpload");
         }
         return status;
       },
@@ -151,8 +160,10 @@ export default {
     },
     clearPost() {
       this.$v.$reset(); //Ресетваме валидацията да не дава грешки, след като изчистиме формата.
+      this.$refs.myFileInput.value = ""; //Изчистваме името на файла от полето за въвеждане на файл. Ако само го изчистм от formData, не се получава.
 
       this.formData = {
+        img: "",
         title: "",
         description: "",
         content: "",
