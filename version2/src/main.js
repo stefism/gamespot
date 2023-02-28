@@ -13,6 +13,8 @@ import {
   MdDialog,
   MdContent,
   MdSnackbar,
+  MdTable,
+  MdDialogConfirm,
 } from "vue-material/dist/components";
 import "vue-material/dist/vue-material.min.css";
 import "vue-material/dist/theme/default.css";
@@ -22,6 +24,8 @@ Vue.use(MdButton);
 Vue.use(MdDialog);
 Vue.use(MdContent);
 Vue.use(MdSnackbar);
+Vue.use(MdTable);
+Vue.use(MdDialogConfirm);
 
 Vue.use(vuelidate);
 Vue.use(wysiwyg, {});

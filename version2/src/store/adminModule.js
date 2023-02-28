@@ -145,6 +145,12 @@ const admin = {
           commit("addPostIndicate");
         });
     },
+    deletePost({ dispatch, state }, postId) {
+      Vue.http.delete(
+        `${databaseUrl}/posts/${postId}.json?auth=${state.token}`
+      );
+      dispatch("posts/getAllPosts", { limit: -1 }, { root: true });
+    },
     // eslint-disable-next-line no-unused-vars
     imageUpload({ commit }, file) {
       const cloudinaryURL =

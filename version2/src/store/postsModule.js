@@ -25,25 +25,32 @@ const posts = {
     setPostById(state, post) {
       state.postById = post;
     },
+    clearPostView(state) {
+      state.postById = null;
+    },
   },
   actions: {
     getAllPosts({ commit }, payload) {
-      Vue.http
-        .get(
-          `${databaseUrl}/posts.json?orderBy="$key"&limitToLast=${payload.limit}`
-        )
-        .then((response) => {
-          const posts = [];
+      let url = "";
 
-          for (const key in response.body) {
-            posts.push({
-              ...response.body[key],
-              id: key,
-            });
-          }
+      if (payload.limit == -1) {
+        url = `${databaseUrl}/posts.json`;
+      } else {
+        url = `${databaseUrl}/posts.json?orderBy="$key"&limitToLast=${payload.limit}`;
+      }
 
-          commit("setAllPosts", posts.reverse());
-        });
+      Vue.http.get(url).then((response) => {
+        const posts = [];
+
+        for (const key in response.body) {
+          posts.push({
+            ...response.body[key],
+            id: key,
+          });
+        }
+
+        commit("setAllPosts", posts.reverse());
+      });
     },
 
     getPostById({ commit }, postId) {

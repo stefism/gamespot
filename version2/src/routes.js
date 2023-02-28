@@ -10,6 +10,7 @@ import DashboardWelcome from "@/components/posts/DashboardWelcome.vue";
 import AddPosts from "@/components/posts/AddPosts.vue";
 import ListOfPosts from "@/components/posts/ListOfPosts.vue";
 import PostView from "@/components/posts/PostView.vue";
+import PageNotFound from "@/components/PageNotFound.vue";
 
 Vue.use(VueRouter);
 
@@ -59,6 +60,7 @@ const routes = [
     ],
     ...authGuard,
   },
+  { path: "*", component: PageNotFound },
 ];
 
 export default new VueRouter({
